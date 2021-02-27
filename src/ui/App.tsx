@@ -10,6 +10,8 @@ import Toasts from './components/Toasts/Toasts';
 import AppActions from './actions/AppActions';
 import * as PlayerActions from './actions/PlayerActions';
 
+import Player from './lib/player';
+
 import styles from './App.module.css';
 import { isCtrlKey } from './lib/utils-platform';
 
@@ -49,7 +51,16 @@ const Museeks: React.FC = (props) => {
   }, []);
 
   return (
-    <div className={`${styles.root} os-${os.platform()}`}>
+    <div className={`${styles.root} os-${os.platform()}`}
+      onKeyDown={(e) => {
+        if(e.code === 'ArrowRight') {
+          Player.setAudioCurrentTime(Player.getCurrentTime()+10);
+        } else if(e.code === 'ArrowLeft') {
+          Player.setAudioCurrentTime(Player.getCurrentTime()-10);
+        }
+        console.info('onKeyDown: ' + e.code);
+      }}
+    >
       <KeyBinding onKey={onKey} preventInputConflict />
       <Header />
       <main className={styles.mainContent}>{props.children}</main>
